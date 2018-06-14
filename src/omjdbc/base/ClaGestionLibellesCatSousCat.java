@@ -12,7 +12,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.sql.rowset.*;
+import javax.sql.rowset.CachedRowSet;
+import javax.sql.rowset.RowSetFactory;
+import javax.sql.rowset.RowSetProvider;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -88,7 +90,7 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
         // il y a peut-être plus simple... mais bon... allez-y cherchez !!!!        
         UIManager.put("Label.disabledForeground", Color.BLACK);
 
-        requete_id_libelle();
+        requete_id_video();
 
     }
 
@@ -154,10 +156,10 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
         jScrollPane2.setViewportView(jTextArea1Libelle);
 
         jLabel1_Libelle.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1_Libelle.setText("Libellé");
+        jLabel1_Libelle.setText("Film");
 
         jLabel1_SousCategories.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1_SousCategories.setText("Sous catégories");
+        jLabel1_SousCategories.setText("Genre");
 
         jButton1FirstRecord.setText("|<");
         jButton1FirstRecord.addActionListener(new java.awt.event.ActionListener() {
@@ -199,7 +201,7 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
         jLabel1idLibelle.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
         jLabel1Categories.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1Categories.setText("Catégories");
+        jLabel1Categories.setText("Realisateur");
 
         jList1Categories.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -213,28 +215,28 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
         });
         jScrollPane3.setViewportView(jList1Categories);
 
-        jButton1AjouterSCLibelle.setText("Ajouter sous catégories");
+        jButton1AjouterSCLibelle.setText("Ajouter genre");
         jButton1AjouterSCLibelle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1AjouterSCLibelleActionPerformed(evt);
             }
         });
 
-        jButton1EffacerSCLibelle.setText("Effacer sous catégories");
+        jButton1EffacerSCLibelle.setText("Effacer genre");
         jButton1EffacerSCLibelle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1EffacerSCLibelleActionPerformed(evt);
             }
         });
 
-        jButton1AjouterCategorie.setText("Ajouter catégories");
+        jButton1AjouterCategorie.setText("Ajouter realisateur");
         jButton1AjouterCategorie.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1AjouterCategorieActionPerformed(evt);
             }
         });
 
-        jButton1EffacerCategorie.setText("Effacer catégories");
+        jButton1EffacerCategorie.setText("Effacer realisateur");
         jButton1EffacerCategorie.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1EffacerCategorieActionPerformed(evt);
@@ -327,12 +329,9 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1FirstRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1FirstRecordActionPerformed
-        // TODO add your handling code here:
-//        jButton1EffacerSCLibelle.setEnabled(false);
-        //jButton1EffacerCategorie.setEnabled(false);
 
         // OMDB 04.04.2018 : Affiche le premier libellé avec le(s) sous catégorie(s) qui correspond(ent).
-        remplir_listes_categories_sous_categories("FIRST", rowset);
+        remplir_listes_categories_genres("FIRST", rowset);
     }//GEN-LAST:event_jButton1FirstRecordActionPerformed
 
     private void jButton1FermerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1FermerActionPerformed
@@ -370,19 +369,19 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
     private void jButton1NextRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1NextRecordActionPerformed
         // TODO add your handling code here:
         // OMDB 04.04.2018 : Affiche le libellé suivant avec le(s) sous catégorie(s) qui correspond(ent).
-        remplir_listes_categories_sous_categories("NEXT", rowset);
+        remplir_listes_categories_genres("NEXT", rowset);
     }//GEN-LAST:event_jButton1NextRecordActionPerformed
 
     private void jButton1PrevRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1PrevRecordActionPerformed
         // TODO add your handling code here:
         // OMDB 04.04.2018 : Affiche le libellé précédent avec le(s) sous catégorie(s) qui correspond(ent).
-        remplir_listes_categories_sous_categories("PREV", rowset);
+        remplir_listes_categories_genres("PREV", rowset);
     }//GEN-LAST:event_jButton1PrevRecordActionPerformed
 
     private void jButton1LastRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1LastRecordActionPerformed
         // TODO add your handling code here:
         // OMDB 04.04.2018 : Affiche le dernier libellé avec le(s) sous catégorie(s) qui correspond(ent).
-        remplir_listes_categories_sous_categories("LAST", rowset);
+        remplir_listes_categories_genres("LAST", rowset);
     }//GEN-LAST:event_jButton1LastRecordActionPerformed
 
     private void jTextArea1LibelleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextArea1LibelleMouseClicked
@@ -420,7 +419,7 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
         // TODO add your handling code here:
         /* OMDB 11.04.2018 : Rafraîchir les 2 listes car il y a eu un changement, soit en insertion, soit un effacement dans une des listes
          */
-        remplir_listes_categories_sous_categories("ACTUAL", rowset);
+        remplir_listes_categories_genres("ACTUAL", rowset);
         // OMDB 11.04.2018 : Autoriser l'ajout dans les listes grâce aux boutons AJOUT
         jButton1AjouterSCLibelle.setEnabled(true);
         jButton1AjouterCategorie.setEnabled(true);
@@ -493,7 +492,7 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jList1CategoriesValueChanged
 
-    private void requete_id_libelle() {
+    private void requete_id_video() {
         try {
             /*  OMDB 08.04.2018 : Requête pour connaître les "id" des libellés,
                 on doit les connaître afin de parcourir chaque enregistrement à l'aide 
@@ -501,7 +500,7 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
                 A chaque clic sur un des boutons "NEXT", "PREV", "FIRST", "LAST" on doit "passer" l'id du libellé
              */
 
-            String sql_select_sc_cat = "SELECT id_artistes, nom_artiste FROM T_Artistes T1\n"
+            String sql_select_sc_cat = "SELECT DISTINCT id_artistes, nom_artiste FROM T_Artistes T1\n"
                     + "               LEFT JOIN artiste_appartient_label T2 ON T2.fk_Artiste = T1.id_artistes\n"
                     + "               LEFT JOIN T_labels T3 ON T3.id_label = T2.fk_Label\n"
                     + "               INNER JOIN artiste_a_musique T4 ON T4.fk_Artiste = T1.id_artistes\n"
@@ -535,7 +534,7 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
              */
             oConnection.closeConnection();
             // OMDB 10.04.2018 : remplir la SWING CONTROL JLIST avec les valeurs des catégories et des sous catégories. On se place au début (FIRST) du RECORDSET
-            remplir_listes_categories_sous_categories("FIRST", rowset);
+            remplir_listes_categories_genres("FIRST", rowset);
 
         } catch (SQLException ex) {
             Logger.getLogger(ClaGestionLibellesCatSousCat.class.getName()).log(Level.SEVERE, null, ex);
@@ -552,7 +551,7 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
 
     }
 
-    private boolean remplir_listes_categories_sous_categories(String choixCurseur, CachedRowSet rowsetrsScCat) {
+    private boolean remplir_listes_categories_genres(String choixCurseur, CachedRowSet rowsetrsScCat) {
         /*
         OMDB 28.04.2018 : Pour afficher des valeurs dans les deux JLIST (CATEGORIE ET SOUS CATEGORIS)
          */
@@ -567,8 +566,6 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
              */
             switch (choixCurseur) {
                 case "ACTUAL": {
-                    System.out.println("actu");
-
                     jButton1FirstRecord.setEnabled(true);
                     jButton1PrevRecord.setEnabled(true);
                     jButton1NextRecord.setEnabled(true);
@@ -579,37 +576,27 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
                 case "FIRST": {
                     jButton1FirstRecord.setEnabled(false);
                     jButton1PrevRecord.setEnabled(false);
-                    System.out.println("first");
                     jButton1NextRecord.setEnabled(true);
                     jButton1LastRecord.setEnabled(true);
                     rowsetrsScCat.first();
-                    System.out.println(rowsetrsScCat.first());
                 }
                 break;
                 case "LAST": {
-
                     jButton1FirstRecord.setEnabled(true);
                     jButton1PrevRecord.setEnabled(true);
-                    jButton1NextRecord.setEnabled(true);
-                    jButton1LastRecord.setEnabled(true);
+                    jButton1NextRecord.setEnabled(false);
+                    jButton1LastRecord.setEnabled(false);
                     rowsetrsScCat.last();
-                    System.out.println("last");
-                    System.out.println(rowsetrsScCat.last());
-
                 }
                 break;
                 case "NEXT": {
-
                     jButton1FirstRecord.setEnabled(true);
                     jButton1PrevRecord.setEnabled(true);
                     jLabel2MessageNavigation.setText("");
                     rowsetrsScCat.next();
-                    System.out.println("next");
                 }
                 break;
                 case "PREV": {
-                    System.out.println("prev");
-
                     jButton1NextRecord.setEnabled(true);
                     jButton1LastRecord.setEnabled(true);
                     jLabel2MessageNavigation.setText("");
@@ -622,11 +609,10 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
 
 
             /*  
-                OMDB 08.04.2018 : La requête "sql_select_sc" récupère les "id_libelle_probleme"
+                OMDB 08.04.2018 : La requête "sql_select_sc" récupère les "ID_Video"
                 il suffit de construire une nouvelle requête qui recherche toutes les sous-catégories
-                qui correspondent à l'"id_libelle_probleme"
+                qui correspondent à l'"ID_Video"
              */
-            System.out.println(idLibProb);
             idLibProb = rowsetrsScCat.getString("id_artistes");
 
             // OMDB 08.04.2018 : Affiche l'id_libelle_probleme
@@ -636,14 +622,14 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
                     + "               LEFT JOIN artiste_appartient_label T2 ON T2.fk_Artiste = T1.id_artistes\n"
                     + "               LEFT JOIN T_labels T3 ON T3.id_label = T2.fk_Label\n"
                     + "               INNER JOIN artiste_a_musique T4 ON T4.fk_Artiste = T1.id_artistes\n"
-                    + "               INNER JOIN T_Musiques T5 ON T5.id_musiques = T4.fk_Artiste\n"
+                    + "               INNER JOIN T_Musiques T5 ON T5.id_musiques = T4.fk_Musique\n"
                     + "               WHERE id_artistes =" + idLibProb;
 
             String sql_select_sc_where = "SELECT DISTINCT nom_artiste, id_label, nom_label FROM T_Artistes T1\n"
                     + "               LEFT JOIN artiste_appartient_label T2 ON T2.fk_Artiste = T1.id_artistes\n"
                     + "               LEFT JOIN T_labels T3 ON T3.id_label = T2.fk_Label\n"
                     + "               INNER JOIN artiste_a_musique T4 ON T4.fk_Artiste = T1.id_artistes\n"
-                    + "               INNER JOIN T_Musiques T5 ON T5.id_musiques = T4.fk_Artiste\n"
+                    + "               INNER JOIN T_Musiques T5 ON T5.id_musiques = T4.fk_Musique\n"
                     + "               WHERE id_artistes =" + idLibProb;
 
             // OMDB 13.03.2018 : Permet d'afficher des données (CATEGORIES) dans un modèle de liste qu'il est possible de personnaliser.
@@ -657,7 +643,7 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
             PreparedStatement pstCat = ClaConnectionBd.getConnection().prepareStatement(sql_select_cat_where);
             // OMDB 06.04.2018 : Envoyer la requête à la BD
             ResultSet rsCat = pstCat.executeQuery();
-            // OMDB 08.04.2018 : Parcourir et ajouter à la jLIST les catégories qui correspondent à l'"id_libelle_probleme"
+            // OMDB 08.04.2018 : Parcourir et ajouter à la jLIST les catégories qui correspondent à l'"ID_Video"
             while (rsCat.next()) {
                 // OMDB 04.04.2018 : Afficher le libellé dans une zone de textarea
                 jTextArea1Libelle.setText(rsCat.getString("nom_artiste"));
@@ -675,7 +661,7 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
             PreparedStatement pstSc = ClaConnectionBd.getConnection().prepareStatement(sql_select_sc_where);
             // OMDB 06.04.2018 : Envoyer la requête à la BD
             ResultSet rsSc = pstSc.executeQuery();
-            // OMDB 08.04.2018 : Parcourir et ajouter à la JLIST les sous catégories qui correspondent à l'"id_libelle_probleme"
+            // OMDB 08.04.2018 : Parcourir et ajouter à la JLIST les sous catégories qui correspondent à l'"ID_Video"
             while (rsSc.next()) {
                 // OMDB 04.04.2018 : Afficher le libellé dans une zone de textarea
                 jTextArea1Libelle.setText(rsSc.getString("nom_artiste"));
@@ -741,13 +727,12 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
 
         // OMDB 15.04.2018 : Requête pour rechercher l'id de la ligne à effacer (id_Libelle_SousCat) dans la table de liaison entre les LIBELLES et les SOUS CATEGORIES
         String sql_idLibelleSousCat = "SELECT id_artiste_appartient_label  FROM artiste_appartient_label WHERE fk_Artiste = ? AND fk_Label = \n"
-                + " (SELECT id_label FROM T_labels WHERE nom_label LIKE ?)";
+                + " (SELECT id_label FROM T_labels WHERE nom_label COLLATE utf8_unicode_ci LIKE ?)";
 
         // OMDB 15.04.2018 : Requête pour EFFACER la ligne (id_artiste_appartient_label) dans la table de liaison entre les LIBELLES et les SOUS CATEGORIES        
         String sql_DeleteidLibelleSousCat = "DELETE FROM artiste_appartient_label WHERE id_artiste_appartient_label = ?";
 
         try {
-
             // OMDB 28.04.2018 : l'utilisateur à cliqué sur le bouton d'effacement et rien n'est sélectionné. Affiche un message d'erreur
             if (selectedIdx.length == 0) {
                 // OMDB 13.04.2018 : Avertir l'utilisateur qu'il n'a rien sélectonné dans la JLIST
@@ -812,7 +797,7 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
             }
 
             // OMDB 04.04.2018 : Recharge les listes avec une requête en lecture des changements de BD
-            remplir_listes_categories_sous_categories("ACTUAL", rowset);
+            remplir_listes_categories_genres("ACTUAL", rowset);
 
             // OMDB 16.04.2018 : ATTENTION MAGIE ET SUBTILITE en programmation JAVA (et autres..)
             // et là voilà sa réactivation de façon à pouvoir rafrâichir la Jlist "en silence" des listeners
@@ -845,7 +830,7 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
 
         // OMDB 24.04.2018 : Requête pour rechercher l'id de la ligne à effacer (id_artiste_a_musique) dans la table de liaison entre les LIBELLES et les CATEGORIES
         String sql_idLibelleCat = "SELECT id_artiste_a_musique FROM artiste_a_musique WHERE fk_Artiste = ? AND fk_Musique = \n"
-                + "(SELECT id_musiques FROM T_Musiques WHERE nom_musique COLLATE LIKE ?)";
+                + "(SELECT id_musiques FROM T_Musiques WHERE nom_musique COLLATE utf8_unicode_ci LIKE ?)";
 
         // OMDB 24.04.2018 : Requête pour EFFACER la ligne (id_artiste_a_musique) dans la table de liaison entre les LIBELLES et les CATEGORIES        
         String sql_DeleteidLibelleCat = "DELETE FROM artiste_a_musique WHERE id_artiste_a_musique = ?";
@@ -916,7 +901,7 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
             }
 
             // OMDB 04.04.2018 : Recharge les listes avec une requête en lecture des changements de BD
-            remplir_listes_categories_sous_categories("ACTUAL", rowset);
+            remplir_listes_categories_genres("ACTUAL", rowset);
 
             // OMDB 24.04.2018 : ATTENTION MAGIE ET SUBTILITE en programmation JAVA (et autres..)
             // et là voilà sa réactivation de façon à pouvoir rafrâichir la Jlist "en silence" des listeners
@@ -963,6 +948,62 @@ public class ClaGestionLibellesCatSousCat extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ClaGestionLibellesCatSousCat.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

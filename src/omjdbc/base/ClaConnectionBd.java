@@ -24,7 +24,7 @@ public class ClaConnectionBd {
     private static final String DRIVER_NAME = "com.mysql.jdbc.Driver";
 //    private static final String CHAINE_CONNECT_DB = "jdbc:mysql://localhost:3306/om_db_latex_final";
 //    private static final String CHAINE_CONNECT_DB = "jdbc:mysql://localhost:3306/om_db_latex_final_copie";
-    private static final String CHAINE_CONNECT_DB = "jdbc:mysql://localhost:3306/Hadi_LabelsM_DB";
+    private static final String CHAINE_CONNECT_DB = "jdbc:mysql://127.0.0.1:3307/Hadi_LabelsM_DB";
   	    
     private static final String USER = "root";
     private static final String PASSWORD = "root";

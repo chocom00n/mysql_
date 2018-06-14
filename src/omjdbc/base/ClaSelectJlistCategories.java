@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -11,51 +11,50 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
-
 /**
  *
  * @author zaurak
  */
 public class ClaSelectJlistCategories extends javax.swing.JFrame {
+
     private List<String> selectedValuesCategories;
     private ClaConnectionBd oConnection = new ClaConnectionBd();
 
     private static int idLibProbReceiveSelectJlist;
 
-   
     /**
      * Creates new form essaiJList
      */
     public ClaSelectJlistCategories() {
-  
-            initComponents();
-            // OMDB 13.04.2018 : Initialisation des messages d'information.
-            jTextArea1CategoriesSelected.setText("");
-            jLabel3MessageSaveCategorie.setText("");
-            /* OMDB 13.04.2018 : Il ne faut pas que l'utilisateur sélectionne une sauvegarde en BD,
+
+        initComponents();
+        // OMDB 13.04.2018 : Initialisation des messages d'information.
+        jTextArea1CategoriesSelected.setText("");
+        jLabel3MessageSaveCategorie.setText("");
+        /* OMDB 13.04.2018 : Il ne faut pas que l'utilisateur sélectionne une sauvegarde en BD,
             alors que rien n'est sélectionné dans la liste des sous catégories.
             on désactive le bouton "jButton1SaveLibSc"
-            */
-            jButton1SaveLibCategorie.setEnabled(false);
-            
-            setidLibProbReceiveSelectJlist(getidLibProbReceiveSelectJlist());
-            //System.out.println("idLibelleString " + idLibelleString);
+         */
+        jButton1SaveLibCategorie.setEnabled(false);
 
-            // OMDB 13.03.2018 : On insére les valeurs de la base de donnée dans la "jList1Categories"
-            remplir_liste_categories();
+        setidLibProbReceiveSelectJlist(getidLibProbReceiveSelectJlist());
+        //System.out.println("idLibelleString " + idLibelleString);
+
+        // OMDB 13.03.2018 : On insére les valeurs de la base de donnée dans la "jList1Categories"
+        remplir_liste_categories();
 
     }
 
     public ClaSelectJlistCategories(int idLibelleRecu) {
         /* OMDB 28.04.2018 : Pour passer l'id du libellé qui se trouve sélectionné dans la fenêtre PARENT 
             dans ClaGestionLibellesCatSousCat par l'event jButton1AjouterCategorieActionPerformed
-        */    
+         */
         setidLibProbReceiveSelectJlist(idLibelleRecu);
         // OMDB 28.04.2018 : juste pour imprimer dans la console....
         System.out.println("idLibelleRecu " + getidLibProbReceiveSelectJlist());
 
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -165,12 +164,12 @@ public class ClaSelectJlistCategories extends javax.swing.JFrame {
         // TODO add your handling code here:
         /* OMDB 13.04.2018 : Efface l'éventuel message(insertion ok ou pas d'insertion)
          ... car l'utilisateur vient de cliquer su une sous catégorie 
-        */
+         */
         jLabel3MessageSaveCategorie.setText("");
         jButton1SaveLibCategorie.setEnabled(true);
         //System.out.println("jListCategoriesValueChanged " + this.getidLibProbReceiveSelectJlist());
 
-        if(!evt.getValueIsAdjusting()) {
+        if (!evt.getValueIsAdjusting()) {
             selectedValuesCategories = (List<String>) jList1Categories.getSelectedValuesList();
             // OMDB 13.04.2018 : Affiche dans une fenêtre jTextArea1SCselected les sous catégories sélectionnées
             String chaineselectedValuesCategories = String.join("\n", selectedValuesCategories);
@@ -178,10 +177,10 @@ public class ClaSelectJlistCategories extends javax.swing.JFrame {
             // OMDB 13.04.2018 : Empêcher l'utilisateur de modifier le texte dans le "jTextArea1CategoriesSelected"
             jTextArea1CategoriesSelected.setEditable(false);
         } else {
-        
+
         }
 
-       
+
     }//GEN-LAST:event_jList1CategoriesValueChanged
 
     private void jButton1SaveLibCategorieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1SaveLibCategorieActionPerformed
@@ -194,32 +193,27 @@ public class ClaSelectJlistCategories extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1FermerActionPerformed
 
-    
-
-public final int getidLibProbReceiveSelectJlist ()
-{
-    /*  OMDB 28.04.2018 : Retourne l'id du libellé (situé dans la fenêtre PARENT dans ClaGestionLibellesCatSousCat 
+    public final int getidLibProbReceiveSelectJlist() {
+        /*  OMDB 28.04.2018 : Retourne l'id du libellé (situé dans la fenêtre PARENT dans ClaGestionLibellesCatSousCat 
         ici joue le rôle de GETTER
-    */
-    return idLibProbReceiveSelectJlist;
-}
+         */
+        return idLibProbReceiveSelectJlist;
+    }
 
-public final void setidLibProbReceiveSelectJlist (int idLib)
-{
-    /*  OMDB 28.04.2018 : Pour accèder à la variable private idLibProbReceiveSelectJlist, joue le rôle de SETTER 
+    public final void setidLibProbReceiveSelectJlist(int idLib) {
+        /*  OMDB 28.04.2018 : Pour accèder à la variable private idLibProbReceiveSelectJlist, joue le rôle de SETTER 
         variable qui indique l'id du libellé problème
-    */
-    idLibProbReceiveSelectJlist = idLib;
-}
+         */
+        idLibProbReceiveSelectJlist = idLib;
+    }
 
+    private boolean remplir_liste_categories() {
 
-private boolean remplir_liste_categories() {
-        
         // OMDB 13.03.2018 : Pour remplir la Jlist des catégories
         String sql_select_categories = "SELECT id_musiques, nom_musique COLLATE utf8_unicode_ci as nom_musique  FROM T_Musiques ORDER BY nom_musique COLLATE utf8_unicode_ci DESC";
 
-        try{
-       
+        try {
+
             // OMDB 13.03.2018 : "préparer" la requête (ici sans paramètres) pour la BD.
             PreparedStatement pstCategories = ClaConnectionBd.getConnection().prepareStatement(sql_select_categories);
             // OMDB 13.03.2018 : Permet d'afficher des données dans un modèle de liste qu'il est possible de personnaliser.
@@ -229,123 +223,18 @@ private boolean remplir_liste_categories() {
             ResultSet rsCategories = pstCategories.executeQuery();
 
             // OMDB 13.03.2018 : Parcourir toutes les lignes de la table
-            while(rsCategories.next())
-            {
+            while (rsCategories.next()) {
                 String nomCategorie = rsCategories.getString("nom_musique");
                 // OMDB 04.04.2018 : ajoute dans le SWING CONTROL JLIST une ligne de donnée
                 defListModel.addElement(nomCategorie);
             }
             /* OMDB 09.04.2018 : ON DOIT FERMER LA CONNECTION A LA BD. 
                 AINSI PAS DE PROBLEMES LIES A LA MULTIPLICATION DES SESSIONS DE L'UTILISATEUR "root"
-            */
+             */
             oConnection.closeConnection();
             // OMDB 13.03.2018 : C'est une fonction. Tout s'est bien déroulé ...donc on lui assigne la valeur TRUE
             return true;
-        }
-        catch(Exception e){
-            // OMDB 13.03.2018 : Avertir l'utilisateur d'un sacré problème d'accès aux tables... héhé !!!
-            JOptionPane.showMessageDialog(null, "Connection à la BD OK ! \nProblème avec l'accès aux tables de la BD !");
-            // OMDB 13.03.2018 : Imprime les erreurs pour pouvoir debugger
-            e.printStackTrace();
-            // OMDB 13.03.2018 : QUITTE L'APPLICATION
-            System.exit(0);
-            return false;
-        }
-    }    
-
-    public boolean insererLibelleCategorieBD() {
-    /*
-        OMDB 13.04.2018 : Insérer des catégories à partir d'une sélection dans une Jlist
-    */
-        
-        int NbDblCat = 0;
-        int[] selectedIdx;
-        selectedIdx = jList1Categories.getSelectedIndices();
-
-        // OMDB 28.04.2018 : Pour compter le éventuels doublons dans les catégories déjà insérées dans la base de donnéee
-        // l'utilisateur n'a pas à se soucier s'il sélectionne un mot déjà présent dans la BD
-
-        String sql_CompterDoublonsCategoriesLibelle = "SELECT count(*) AS NbDblCategorie  FROM artiste_a_musique WHERE fk_Artiste = ? AND fk_Musique = ( SELECT id_musiques FROM T_Musiques WHERE nom_musique COLLATE utf8_unicode_ci LIKE ?)";
-        // OMDB 28.04.2018 : On insère dans la table intermédiaire "artiste_a_musique" la ligne qui indique la correspondance entre le libellé et la catégories 
-        String sql_RechercheIdCategorieInsFkCat = "INSERT INTO artiste_a_musique (id_artiste_a_musique, fk_Artiste, fk_Musique)\n"+
-                " VALUES (NULL, ?,( SELECT id_musiques FROM T_Musiques WHERE nom_musique COLLATE utf8_unicode_ci LIKE ?))";
-
-        try{
-            // OMDB 28.04.2018 : Le tableau des valeurs sélectionnées est vide
-            if (selectedIdx.length == 0) {
-                // OMDB 13.04.2018 : Avertir l'utilisateur qu'il n'a rien sélectonné
-                jLabel3MessageSaveCategorie.setText("Pas de sélection");
-                /* OMDB 13.04.2018 : Il ne faut pas que l'utilisateur sélectionne une sauvegarde en BD, 
-                    alors que rien n'est sélectionné dans la liste des sous catégories.
-                    on désactive le bouton "jButton1SaveLibSc"
-                */
-                jButton1SaveLibCategorie.setEnabled(false);                
-                
-            } else {
-
-                for (int i = 0; i < selectedIdx.length; i++) {
-                    // OMDB 28.04.2018 : Récupère la valeur sélectionnée
-                    Object nomCategorie = jList1Categories.getModel().getElementAt(selectedIdx[i]);
-
-                    // OMDB 13.03.2018 : "préparer" la requête (ici avec un paramètre) pour la BD.
-                    PreparedStatement pstRechIdCategorie = ClaConnectionBd.getConnection().prepareStatement(sql_RechercheIdCategorieInsFkCat);
-                    // OMDB 13.03.2018 : Passer la valeur au paramètre (défini par ?) dans la requête "sql_RechercheIdSousCategorieInsFkSousCat"
-                    pstRechIdCategorie.setInt(1,getidLibProbReceiveSelectJlist());
-                    // OMDB 13.03.2018 : Passer la valeur au paramètre (défini par ?) dans la requête "sql_RechercheIdSousCategorieInsFkSousCat"
-                    pstRechIdCategorie.setString(2, (String) nomCategorie);
-                    // OMDB 13.03.2018 : "préparer" la requête (ici sans paramètres) pour la BD.
-                    PreparedStatement pstCptDoublCategorie = ClaConnectionBd.getConnection().prepareStatement(sql_CompterDoublonsCategoriesLibelle);
-                    // OMDB 13.03.2018 : Passer la valeur au paramètre (défini par ?) dans la requête "sql_RechercheIdSousCategorieInsFkSousCat"
-                    pstCptDoublCategorie.setInt(1, getidLibProbReceiveSelectJlist());                    
-                    // OMDB 13.03.2018 : Passer la valeur au paramètre (défini par ?) dans la requête "sql_RechercheIdSousCategorieInsFkSousCat"
-                    pstCptDoublCategorie.setString(2, (String) nomCategorie);                    
-                    // OMDB 13.03.2018 : Envoyer la requête à la BD
-                    ResultSet rsCptDoublCategorie = pstCptDoublCategorie.executeQuery();
-
-                    while(rsCptDoublCategorie.next())
-                    {
-                        NbDblCat = rsCptDoublCategorie.getInt("NbDblCategorie");
-                    } 
-                    
-                    // OMDB 28.04.2018 : On ne doit pas insèrer des doublons de catégories
-                    if (NbDblCat > 0) {
-                        
-                        jTextArea1CategoriesSelected.setText("");
-                        /* OMDB 13.04.2018 : Avertir l'utilisateur que l'insertion des sous catégories à des doublons
-                            il doit resélectionner
-                        */
-                        jButton1SaveLibCategorie.setEnabled(true);
-                        // OMDB 30.04.2018 : Rend invisible la fenêtre actuelle. 
-                        this.setVisible(false);                        
-                        jLabel3MessageSaveCategorie.setText("DOUBLONS");
-                        JOptionPane.showMessageDialog(null, "PAS D'INSERTION, DOUBLONS");
-
-                        jLabel3MessageSaveCategorie.setText("");                        
-                    } else {
-                        // OMDB 13.03.2018 : Envoyer la requête à la BD
-                        pstRechIdCategorie.execute();
-                        /* OMDB 13.04.2018 : Avertir l'utilisateur que l'insertion des sous catégories sélectionnées est OK
-                            utilise une "messagedialog" qui est modale, donc elle empêche la sélection des autres fenêtres de l'application.
-                            C'est pourquoi il n'est pas utile de désactiver le bouton "jButton1SaveLibSc"... mais je l'ai fait quand même...hihi
-                        */
-                        jButton1SaveLibCategorie.setEnabled(false);
-                        // OMDB 30.04.2018 : Rend invisible la fenêtre actuelle. 
-                        this.setVisible(false);
-                        JOptionPane.showMessageDialog(null, "INSERTION OK");
-                    }
-
-                    /* OMDB 09.04.2018 : ON DOIT FERMER LA CONNECTION A LA BD. 
-                        AINSI PAS DE PROBLEMES LIES A LA MULTIPLICATION DES SESSIONS DE L'UTILISATEUR "root"
-                    */
-                    oConnection.closeConnection();
-                }
-            }
-            // OMDB 13.04.2018 : Ferme cette fenêtre   
-            this.dispose();
-            // OMDB 13.03.2018 : C'est une fonction. Tout s'est bien déroulé ...donc on lui assigne la valeur TRUE
-            return true;
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             // OMDB 13.03.2018 : Avertir l'utilisateur d'un sacré problème d'accès aux tables... héhé !!!
             JOptionPane.showMessageDialog(null, "Connection à la BD OK ! \nProblème avec l'accès aux tables de la BD !");
             // OMDB 13.03.2018 : Imprime les erreurs pour pouvoir debugger
@@ -356,7 +245,105 @@ private boolean remplir_liste_categories() {
         }
     }
 
+    public boolean insererLibelleCategorieBD() {
+        /*
+        OMDB 13.04.2018 : Insérer des catégories à partir d'une sélection dans une Jlist
+         */
 
+        int NbDblCat = 0;
+        int[] selectedIdx;
+        selectedIdx = jList1Categories.getSelectedIndices();
+
+        // OMDB 28.04.2018 : Pour compter le éventuels doublons dans les catégories déjà insérées dans la base de donnéee
+        // l'utilisateur n'a pas à se soucier s'il sélectionne un mot déjà présent dans la BD
+        String sql_CompterDoublonsCategoriesLibelle = "SELECT count(*) AS NbDblCategorie FROM artiste_a_musique WHERE fk_Artiste = ? AND fk_Musique = ( SELECT id_musiques FROM T_Musiques WHERE nom_musique COLLATE utf8_unicode_ci LIKE ?)";
+        // OMDB 28.04.2018 : On insère dans la table intermédiaire "artiste_a_musique" la ligne qui indique la correspondance entre le libellé et la catégories 
+        String sql_RechercheIdCategorieInsFkCat = "INSERT INTO artiste_a_musique (id_artiste_a_musique, fk_Artiste, fk_Musique)\n"
+                + " VALUES (NULL, ?,( SELECT id_musiques FROM T_Musiques WHERE nom_musique COLLATE utf8_unicode_ci LIKE ?))";
+
+        try {
+            // OMDB 28.04.2018 : Le tableau des valeurs sélectionnées est vide
+            if (selectedIdx.length == 0) {
+                // OMDB 13.04.2018 : Avertir l'utilisateur qu'il n'a rien sélectonné
+                jLabel3MessageSaveCategorie.setText("Pas de sélection");
+                /* OMDB 13.04.2018 : Il ne faut pas que l'utilisateur sélectionne une sauvegarde en BD, 
+                    alors que rien n'est sélectionné dans la liste des sous catégories.
+                    on désactive le bouton "jButton1SaveLibSc"
+                 */
+                jButton1SaveLibCategorie.setEnabled(false);
+
+            } else {
+
+                for (int i = 0; i < selectedIdx.length; i++) {
+                    // OMDB 28.04.2018 : Récupère la valeur sélectionnée
+                    Object nomCategorie = jList1Categories.getModel().getElementAt(selectedIdx[i]);
+
+                    // OMDB 13.03.2018 : "préparer" la requête (ici avec un paramètre) pour la BD.
+                    PreparedStatement pstRechIdCategorie = ClaConnectionBd.getConnection().prepareStatement(sql_RechercheIdCategorieInsFkCat);
+                    // OMDB 13.03.2018 : Passer la valeur au paramètre (défini par ?) dans la requête "sql_RechercheIdSousCategorieInsFkSousCat"
+                    pstRechIdCategorie.setInt(1, getidLibProbReceiveSelectJlist());
+                    // OMDB 13.03.2018 : Passer la valeur au paramètre (défini par ?) dans la requête "sql_RechercheIdSousCategorieInsFkSousCat"
+                    pstRechIdCategorie.setString(2, (String) nomCategorie);
+                    // OMDB 13.03.2018 : "préparer" la requête (ici sans paramètres) pour la BD.
+                    PreparedStatement pstCptDoublCategorie = ClaConnectionBd.getConnection().prepareStatement(sql_CompterDoublonsCategoriesLibelle);
+                    // OMDB 13.03.2018 : Passer la valeur au paramètre (défini par ?) dans la requête "sql_RechercheIdSousCategorieInsFkSousCat"
+                    pstCptDoublCategorie.setInt(1, getidLibProbReceiveSelectJlist());
+                    // OMDB 13.03.2018 : Passer la valeur au paramètre (défini par ?) dans la requête "sql_RechercheIdSousCategorieInsFkSousCat"
+                    pstCptDoublCategorie.setString(2, (String) nomCategorie);
+                    // OMDB 13.03.2018 : Envoyer la requête à la BD
+                    ResultSet rsCptDoublCategorie = pstCptDoublCategorie.executeQuery();
+
+                    while (rsCptDoublCategorie.next()) {
+                        NbDblCat = rsCptDoublCategorie.getInt("NbDblCategorie");
+                    }
+
+                    // OMDB 28.04.2018 : On ne doit pas insèrer des doublons de catégories
+                    if (NbDblCat > 0) {
+
+                        jTextArea1CategoriesSelected.setText("");
+                        /* OMDB 13.04.2018 : Avertir l'utilisateur que l'insertion des sous catégories à des doublons
+                            il doit resélectionner
+                         */
+                        jButton1SaveLibCategorie.setEnabled(true);
+                        // OMDB 30.04.2018 : Rend invisible la fenêtre actuelle. 
+                        this.setVisible(false);
+                        jLabel3MessageSaveCategorie.setText("DOUBLONS");
+                        JOptionPane.showMessageDialog(null, "PAS D'INSERTION, DOUBLONS");
+
+                        jLabel3MessageSaveCategorie.setText("");
+                    } else {
+                        // OMDB 13.03.2018 : Envoyer la requête à la BD
+                        pstRechIdCategorie.execute();
+                        /* OMDB 13.04.2018 : Avertir l'utilisateur que l'insertion des sous catégories sélectionnées est OK
+                            utilise une "messagedialog" qui est modale, donc elle empêche la sélection des autres fenêtres de l'application.
+                            C'est pourquoi il n'est pas utile de désactiver le bouton "jButton1SaveLibSc"... mais je l'ai fait quand même...hihi
+                         */
+                        jButton1SaveLibCategorie.setEnabled(false);
+                        // OMDB 30.04.2018 : Rend invisible la fenêtre actuelle. 
+                        this.setVisible(false);
+                        JOptionPane.showMessageDialog(null, "INSERTION OK");
+                    }
+
+                    /* OMDB 09.04.2018 : ON DOIT FERMER LA CONNECTION A LA BD. 
+                        AINSI PAS DE PROBLEMES LIES A LA MULTIPLICATION DES SESSIONS DE L'UTILISATEUR "root"
+                     */
+                    oConnection.closeConnection();
+                }
+            }
+            // OMDB 13.04.2018 : Ferme cette fenêtre   
+            this.dispose();
+            // OMDB 13.03.2018 : C'est une fonction. Tout s'est bien déroulé ...donc on lui assigne la valeur TRUE
+            return true;
+        } catch (Exception e) {
+            // OMDB 13.03.2018 : Avertir l'utilisateur d'un sacré problème d'accès aux tables... héhé !!!
+            JOptionPane.showMessageDialog(null, "Connection à la BD OK ! \nProblème avec l'accès aux tables de la BD !");
+            // OMDB 13.03.2018 : Imprime les erreurs pour pouvoir debugger
+            e.printStackTrace();
+            // OMDB 13.03.2018 : QUITTE L'APPLICATION
+            System.exit(0);
+            return false;
+        }
+    }
 
     /**
      * @param args the command line arguments
